@@ -14,7 +14,7 @@ This is especially useful when sending data to downstream systems (like a contro
 
 ---
 
-## ✨ Features
+## Features
 
 - **Debouncing**: Collect items for a short period before sending.
 - **Per-Key Isolation**: Independent buffers and timers for each key.
