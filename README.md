@@ -22,3 +22,31 @@ This is especially useful when sending data to downstream systems (like a contro
 - **Custom Send Function**: Define how you want to handle flushed batches.
 
 ---
+## Usage
+```go
+package main
+
+import (
+    "fmt"
+    "time"
+    "debounce"
+)
+
+func main() {
+    mgr := debounce.NewManager(debounce.Config{
+        FlushAfter:                2 * time.Second,
+        MinIntervalBetweenFlushes: 200 * time.Millisecond,
+        SendFunc: func(key string, items []interface{}) {
+            fmt.Printf("Flushing key=%s with items=%v\n", key, items)
+        },
+    })
+
+    // Simulate adding items for different keys
+    mgr.Add("device-1", "event-A")
+    mgr.Add("device-1", "event-B")
+    mgr.Add("device-2", "event-X")
+
+    // Prevent the program from exiting immediately
+    time.Sleep(3 * time.Second)
+}
+```
