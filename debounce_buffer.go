@@ -1,3 +1,14 @@
+// Debounced Buffer
+// A generic Go library for debouncing and batching signals from multiple sources
+// (e.g., devices, users, sensors) with per-key isolation and rate-limited flushing.
+// This package helps solve a common systems problem:
+// You receive a bursty stream of signals for many different keys (e.g., device IDs/Mac-Addresses), but you want to batch and flush those signals:
+// - Within a max duration (e.g., 2s)
+// - With a minimum interval between flushes (e.g., 200ms)
+// - Independently for each key (per-device, per-user, etc.)
+//
+// This is useful when sending data to downstream systems (e.g., a control plane or database) that should not be overwhelmed by bursts.
+
 package debounce
 
 import (
