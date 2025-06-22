@@ -49,4 +49,16 @@ func TestPerDeviceBufferingAndSmoothing(t *testing.T) {
 
 	wg.Wait()
 	time.Sleep(3 * time.Second) // allow final flushes
+
+	// Validate that no sends per device were bursty (< sendDelay apart)
+        mu.Lock()
+        for deviceID, times := range sentTimestamps {
+                for i := 1; i < len(times); i++ {
+                        diff := times[i].Sub(times[i-1])
+                        if diff < sendDelay {
+                                t.Errorf("Device %s: bursts detected (%v apart at %v and %v)", deviceID, diff, times[i-1], times[i])
+                        }
+                }
+        }
+        mu.Unlock()
 }
